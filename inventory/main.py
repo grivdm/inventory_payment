@@ -19,7 +19,7 @@ redis = get_redis_connection(
     host=os.getenv("REDIS_HOST"),
     port=os.getenv("REDIS_PORT"),
     password=os.getenv("REDIS_PASSWORD"),
-    decode_responses=True
+    decode_responses=True,
 )
 
 
@@ -38,26 +38,26 @@ class ProductEdit(BaseModel):
     price: float = None
 
 
-@app.get('/product')
+@app.get("/product")
 def get_product():
     return Product.all_pks()
 
 
-@app.post('/product', status_code=201)
+@app.post("/product", status_code=201)
 def create_product(product: Product):
     return product.save()
 
 
-@app.get('/product/{pk}')
+@app.get("/product/{pk}")
 def get_product(pk: str):
     return Product.get(pk)
 
 
-@app.put('/product/{pk}')
+@app.put("/product/{pk}")
 def update_product(pk: str, product_edit_params: ProductEdit):
     return Product.get(pk).update(**product_edit_params.dict(exclude_unset=True))
 
 
-@app.delete('/product/{pk}')
+@app.delete("/product/{pk}")
 def delete_product(pk: str):
     return Product.delete(pk)
