@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.post("", status_code=201)
-def create_product_endpoint(product_params: ProductCreate):
+def create_product(product_params: ProductCreate):
     return product_service.create_product(product_params)
 
 
@@ -27,10 +27,12 @@ def get_product(pk: str):
 
 
 @router.put("/{pk}", response_model=ProductRead)
-def update_product_endpoint(pk: str, product_params: ProductUpdate):
+def update_product(pk: str, product_params: ProductUpdate):
     updated_product = product_service.update_product(pk, product_params)
     if updated_product:
         return ProductRead(**updated_product.dict(exclude_unset=True))
+    else:
+        raise HTTPException(404, "Product not found")
 
 
 @router.delete("/{pk}")

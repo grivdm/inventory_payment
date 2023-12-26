@@ -3,8 +3,8 @@ from redis_om import get_redis_connection
 
 
 redis = get_redis_connection(
-    host=os.getenv("REDIS_HOST"),
-    port=int(os.getenv("REDIS_PORT")),
-    password=os.getenv("REDIS_PASSWORD"),
+    host="redis",
+    port=6379,
+    password="",
     decode_responses=True,
 )
