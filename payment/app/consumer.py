@@ -1,5 +1,5 @@
 import time
-from main import redis, Order
+from payment.app.main import redis, Order
 
 group = "payment-group"
 key = "refund_order"
@@ -18,7 +18,6 @@ while True:
                 for message in result[1]:
                     order = Order.get(message[1]["pk"])
                     if order:
-                        print(order)
                         order.status = "refunded"
                         order.save()
                     else:
