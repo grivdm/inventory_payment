@@ -1,5 +1,6 @@
 import time
-from main import redis, Product
+from app.main import redis
+from app.models.product import Product
 
 group = "inventory-group"
 key = "order_completed"
