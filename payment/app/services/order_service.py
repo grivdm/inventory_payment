@@ -19,7 +19,7 @@ async def create_order(
         product_id=body["product_id"],
         price=product["price"],
         quantity=body["quantity"],
-        total=product["price"] * body["quantity"],
+        total=round(product["price"] * body["quantity"], 2),
         status="pending",
     )
     print(order)

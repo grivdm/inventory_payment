@@ -1,11 +1,14 @@
 import time
-from payment.app.main import redis, Order
+
+from app.dependencies import redis
+from app.models.order import Order
 
 group = "payment-group"
 key = "refund_order"
 
 
 try:
+    redis.xadd(key, {"pk": 1}, "*")
     redis.xgroup_create(key, group)
 except:
     print("Group already exists")
