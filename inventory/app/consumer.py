@@ -19,9 +19,9 @@ while True:
             for result in results:
                 for message in result[1]:
                     product = Product.get(message[1]["product_id"])
-                    if product and product.quantity >= int(message[1][b"quantity"]):
+                    if product and product.quantity >= int(message[1]["quantity"]):
                         print(product)
-                        product.quantity -= int(message[1][b"quantity"])
+                        product.quantity -= int(message[1]["quantity"])
                         product.save()
                     else:
                         redis.xadd("refund_order", message[1], "*")
