@@ -1,4 +1,3 @@
-import os
 from redis_om import get_redis_connection
 
 
