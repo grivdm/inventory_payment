@@ -1,7 +1,7 @@
 import time
 
 from app.dependencies import redis
-from app.models.order import Order
+from app.models.order import Order, OrderStatus
 
 group = "payment-group"
 key = "refund_order"
@@ -21,7 +21,7 @@ while True:
                 for message in result[1]:
                     order = Order.get(message[1]["pk"])
                     if order:
-                        order.status = "refunded"
+                        order.status = OrderStatus.refunded
                         order.save()
                     else:
                         redis.xadd("refund_order", message[1], "*")

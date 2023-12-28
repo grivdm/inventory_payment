@@ -1,7 +1,8 @@
 import time
 from fastapi import BackgroundTasks
 import requests
-from app.models.order import Order
+
+from app.models.order import Order, OrderStatus
 from app.schemas.order import OrderCreate, OrderUpdate
 from app.dependencies import redis
 
@@ -20,7 +21,7 @@ async def create_order(
         price=product["price"],
         quantity=body["quantity"],
         total=round(product["price"] * body["quantity"], 2),
-        status="pending",
+        status=OrderStatus.pending,
     )
     print(order)
     order.save()
@@ -32,7 +33,7 @@ async def create_order(
 def order_completed(order: Order):
     time.sleep(5)
     print("Order completed background task")
-    order.status = "completed"
+    order.status = OrderStatus.completed
     redis.xadd("order_completed", order.dict(), "*")
     order.save()
 
