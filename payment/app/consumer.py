@@ -1,11 +1,14 @@
 import time
-from main import redis, Order
+
+from app.dependencies import redis
+from app.models.order import Order
 
 group = "payment-group"
 key = "refund_order"
 
 
 try:
+    redis.xadd(key, {"pk": 1}, "*")
     redis.xgroup_create(key, group)
 except:
     print("Group already exists")
@@ -18,7 +21,6 @@ while True:
                 for message in result[1]:
                     order = Order.get(message[1]["pk"])
                     if order:
-                        print(order)
                         order.status = "refunded"
                         order.save()
                     else:
