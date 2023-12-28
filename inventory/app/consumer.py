@@ -1,9 +1,11 @@
 import time
-from main import redis, Product
+
+from app.dependencies import redis
+from app.models.product import Product
+
 
 group = "inventory-group"
 key = "order_completed"
-
 
 try:
     redis.xgroup_create(key, group)
@@ -11,16 +13,15 @@ except:
     print("Group already exists")
 
 while True:
-    print("Waiting for messages")
     try:
         results = redis.xreadgroup(group, key, {key: ">"}, None)
         if results:
             for result in results:
                 for message in result[1]:
                     product = Product.get(message[1]["product_id"])
-                    if product:
+                    if product and product.quantity >= int(message[1]["quantity"]):
                         print(product)
-                        product.quantity -= int(message[1][b"quantity"])
+                        product.quantity -= int(message[1]["quantity"])
                         product.save()
                     else:
                         redis.xadd("refund_order", message[1], "*")
