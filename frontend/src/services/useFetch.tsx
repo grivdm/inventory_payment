@@ -1,34 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
+import { IAPIRequest, IAPIResponse } from "../types/api";
 
-interface FetchResponse<T> {
-  data: T | null;
-  error: Error | null;
-  loading: boolean;
-}
-
-function useFetch<T>(url: string): FetchResponse<T> {
+const useFetch = <T,>() => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const callFetch = useCallback(
+    async (request: IAPIRequest): Promise<IAPIResponse<T>> => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const response = await fetch(url);
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        setError(error as Error);
+        const response = await fetch(request.url, {
+          method: request.method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(request.body),
+        });
+        const JSONdata = await response.json();
+        if (!response.ok) {
+          throw new Error(JSONdata.message);
+        }
+        setData(JSONdata);
+        return { data, error: null };
+      } catch (err) {
+        setError(err as Error);
+        return { data: null, error };
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchData();
-  }, [url]);
-
-  return { data, error, loading };
-}
+    },
+    []
+  );
+  return { callFetch, data, error, loading };
+};
 
 export default useFetch;

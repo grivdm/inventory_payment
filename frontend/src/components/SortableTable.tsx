@@ -1,11 +1,17 @@
+import { on } from "events";
 import React, { useState } from "react";
 
 interface SortableTableProps {
   data: any[];
   columns: string[];
+  onDelete: (pk: string) => void;
 }
 
-const SortableTable: React.FC<SortableTableProps> = ({ data, columns }) => {
+const SortableTable: React.FC<SortableTableProps> = ({
+  data,
+  columns,
+  onDelete,
+}) => {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
@@ -30,6 +36,12 @@ const SortableTable: React.FC<SortableTableProps> = ({ data, columns }) => {
       })
     : data;
 
+  const del = (pk: string) => {
+    if (window.confirm("Are you sure ?")) {
+      onDelete(pk);
+    }
+  };
+
   return (
     <table
       className="table table-striped mx-auto mt-5 w-75 
@@ -37,6 +49,22 @@ const SortableTable: React.FC<SortableTableProps> = ({ data, columns }) => {
     >
       <thead className="text-uppercase font-weight-bold border-bottom border-dark">
         <tr>
+          {/* {columns.map((column) => (
+            <th
+              key={column}
+              onClick={() => handleSort(column)}
+              className="col-2"
+            >
+              <div className="d-flex justify-content-between align-items-center">
+                {column}
+                {sortColumn === column && (
+                  <span className="">
+                    {sortDirection === "asc" ? "▲" : "▼"}
+                  </span>
+                )}
+              </div>
+            </th>
+          ))} */}
           {columns.map((column) => (
             <th
               key={column}
@@ -53,6 +81,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ data, columns }) => {
               </div>
             </th>
           ))}
+          <th className="col-2">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -61,6 +90,14 @@ const SortableTable: React.FC<SortableTableProps> = ({ data, columns }) => {
             {columns.map((column) => (
               <td key={column}>{item[column]}</td>
             ))}
+            <td colSpan={columns.length + 1} className="text-right">
+              <button
+                className="btn btn-danger"
+                onClick={() => del(item["pk"])}
+              >
+                Delete
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>

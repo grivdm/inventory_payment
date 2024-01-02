@@ -4,6 +4,8 @@ import HomePage from "./pages/HomePage";
 import Sidebar from "./components/Sidebar";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
+import ProductCreate from "./pages/ProductCreate";
+import OrderCreate from "./pages/OrderCreate";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +25,8 @@ const App: React.FC = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<Products />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/products/create" element={<ProductCreate />} />
+              <Route path="/orders/create" element={<OrderCreate />} />
             </Routes>
           </main>
         </div>
