@@ -11,7 +11,6 @@ services:
       - .env
     depends_on:
       - redis
-
     
   payment:
     build: ./payment
@@ -32,3 +31,12 @@ services:
     volumes:
       - ./redis-data:/data
       
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/src
+    depends_on:
+      - inventory
+      - payment

@@ -1,12 +1,14 @@
 from pydantic import BaseModel
 
+from app.models.order import OrderStatus
+
 
 class OrderBase(BaseModel):
     product_id: str
     price: float
     quantity: int
     total: float
-    status: str
+    status: OrderStatus
 
 
 class OrderCreate(BaseModel):
