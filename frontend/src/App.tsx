@@ -21,13 +21,15 @@ const App: React.FC = () => {
             <Sidebar />
           </div>
           <main className="col-md-10 ml-sm-auto col-lg-10 pt-4 px-4">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/products/create" element={<ProductCreate />} />
-              <Route path="/orders/create" element={<OrderCreate />} />
-            </Routes>
+            <div className="w-75">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/products/create" element={<ProductCreate />} />
+                <Route path="/orders/create" element={<OrderCreate />} />
+              </Routes>
+            </div>
           </main>
         </div>
       </div>

@@ -44,7 +44,7 @@ const SortableTable: React.FC<SortableTableProps> = ({
 
   return (
     <table
-      className="table table-striped mx-auto mt-5 w-75 
+      className="table table-striped mx-auto mt-5 
     "
     >
       <thead className="text-uppercase font-weight-bold border-bottom border-dark">
